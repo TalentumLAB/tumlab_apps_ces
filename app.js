@@ -1,298 +1,313 @@
-import {
-  infoSlider,
-  headerMenulist,
-  menuConfigurations,
-  apps,
-} from "./const.js";
-import { renderSlider } from "./components/slider.js";
+/// Habilitar o deshabilitar footer
+const ENABLED_FOOTER = true;
 
-const intro = document.querySelector(".intro");
-const header = document.querySelector(".header");
-const footer = document.querySelector(".footer");
-const logo = document.querySelector(".logo");
-const mainContainer = document.querySelector(".main-container");
+//Arreglo de las aplicaciones
+const addApps = [
+  {
+    category_name: 'Plataformas LMS',
+    enable: false,
+    children: [
+      {
+        order: 1,
+        thumbnail: "./img/tumlab/tumlab_thumbnail.png",
+        is_show: true,
+        title: "./img/tumlab/tumlab_title.png",
+        cover: "./img/tumlab/tumlab_cover.png",
+        description:
+          "TUMLAB LMS es una plataforma de aprendizaje diseñada para proporcionarle a educadores, administradores y estudiantes un sistema integrado único, robusto y seguro para crear ambientes de aprendizaje personalizados. Una interfaz simple, recursos bien documentados, junto con mejoras continuas, hacen a Moodle fácil de aprender y usar.",
+        url: "http://tumlab.local:5000",
+      },
+      {
+        order: 2,
+        thumbnail: "./img/sistema_de_informacion/sistema_de_informacion.svg",
+        is_show: true,
+        title: "./img/sistema_de_informacion/sistema_de_informacion_title.svg",
+        cover: "./img/sistema_de_informacion/sistema_de_informacion_cover.png",
+        description:
+          "El sistema de información es una de herramienta para reportes de la plataforma de contenido pedagogico que permite visualizar indicadores, desplegar gráficas y generar reportes sobre la información del estado y avance de los usuarios en las actividades elaboradas en los diferentes cursos de la plataforma.",
+        url: "http://tumlab.local:3000",
+      },
+    ]
+  },
+  {
+    category_name: 'Temas lúdicos',
+    enable: true,
+    children: [
+      {
+        order: 1,
+        thumbnail: "./img/scratch/scratch_thumbnail.png",
+        is_show: true,
+        title: "./img/scratch/scratch_title.png",
+        cover: "./img/scratch/scratch_cover.png",
+        description:
+          "Scratch es la comunidad de programación para niños y niñas más grande del mundo, y un lenguaje de programación con una interfaz sencilla que permite a los jóvenes crear historias digitales, juegos y animaciones. Scratch está diseñado, desarrollado y moderado por la Fundación Scratch, una organización sin ánimo de lucro. Scratch promueve el pensamiento computacional y las habilidades en resolución de problemas; enseñanza y aprendizaje creativos, auto expresión y colaboración; e igualdad en informática.",
+        url: "http://192.168.4.1:8086",
+      },
+      {
+        order: 2,
+        thumbnail: "./img/residuos/AGAU_CARD.png",
+        is_show: true,
+        title: "./img/residuos/AGAU_TITLE.png",
+        cover: "./img/residuos/AGAU_IMAGE.png",
+        description:
+          "Es un videojuego donde Agau, un robot viajero del tiempo, llega del año 2200 a enseñarnos a salvar el mundo de los residuos tecnológicos, a través de 4 estaciones con varias misiones podemos aprender qué hacer para reducir el impacto medioambiental de los residuos.",
+        url: "http://tumlab.local:8083/",
+      },
+    ],
+  },
+  {
+    category_name: 'Simuladores',
+    enable: true,
+    children: [
+      {
+        order: 1,
+        thumbnail: "./img/simuladores/simuladores_thumbnail.png",
+        is_show: true,
+        title: "./img/simuladores/simuladores_title.png",
+        cover: "./img/simuladores/simuladores_cover.png",
+        description:
+          "Simulaciones interactivas en Física, Química, Ciencias basada en el proyecto de simulaciones interactivas de PhET de la Universidad de Colorado en Boulder. Estos recursos nacen de la investigación educativa extensiva e involucran a los estudiantes mediante un ambiente intuitivo y similar a un juego, en donde aprenden explorando y descubren.",
+        url: "http://tumlab.local:8087/phet_es_2022-12/A/index.html",
+      },
+      {
+        order: 2,
+        thumbnail: "./img/simulators/SIMU_CARD.png",
+        is_show: true,
+        title: "./img/simulators/simu_title.png",
+        cover: "./img/simulators/simu_image.png",
+        description:
+          "Interactive simulations in Physics, Chemistry, Science based on the PhET Interactive Simulations project at the University of Colorado at Boulder. These resources stem from extensive educational research and engage students through an intuitive, game-like environment where they learn by exploring while practicing English.",
+        url: "http://tumlab.local:8087/phet_en_2023-01/A/index.html",
+      }
+    ],
+  },
+  {
+    category_name: 'Inteligencia de negocios',
+    enable: true,
+    children: [
+      {
+        order: 1,
+        thumbnail: "./img/superset/superset_thumbnail.png",
+        is_show: true,
+        title: "./img/superset/superset_title.png",
+        cover: "./img/superset/superset_cover.png",
+        description:
+          "Superset es rápido, liviano, intuitivo y está cargado de opciones que facilitan a los usuarios de todos los conjuntos de habilidades explorar y visualizar sus datos, desde simples gráficos de líneas hasta gráficos geoespaciales altamente detallados.",
+        url: "http://tumlab.local:8088",
+      },
+    ],
+  },
+  {
+    category_name: 'Contenido informativo',
+    enable: true,
+    children: [
+      {
+        order: 1,
+        thumbnail: "./img/wiki/wiki_thumbnail.png",
+        is_show: true,
+        title: "./img/wiki/wiki_title.png",
+        cover: "./img/wiki/wiki_cover.png",
+        description:
+          "Wikipedia es una página web para realizar consultas online de contenido abierto, una web que almacena, recopila y transmite información de manera totalmente estructurada.",
+        url: "http://tumlab.local:8087/wikipedia_es_all_nopic_2022-10/A/Wikipedia:Offline",
+      },
+      {
+        order: 2,
+        thumbnail: "./img/mediacms/card_mediacms.png",
+        is_show: true,
+        title: "./img/mediacms/title_mediacms.svg",
+        cover: "./img/mediacms/cover_mediacms.svg",
+        description:
+          "Sistema de gestión de contenido desarrollado para ver y compartir medios audiovisuales pedagógicos enfocados en las áreas de Álgebra, Física, Geometría y Matemáticas.",
+        url: "http://tumlab.local:8082",
+      },
+      {
+        order: 3,
+        thumbnail: "./img/openstreetmap/open_street_maps.png",
+        is_show: true,
+        title: "./img/openstreetmap/title_openstreetmap.svg",
+        cover: "./img/openstreetmap/cover_openstreetmap.svg",
+        description:
+          "Plataforma para visualizacion de mapas con diversas funcionalidades como: busqueda de lugares, navegacion interactiva con el mapamundi, entre otras. Adicionalmente permite ver información sobre las vías de las ciudades más importantes.",
+        url: "http://tumlab.local:8081",
+      },
+    ],
+  },
+];
 
-const menuList = document.querySelector(".menu-list");
-const listMobile = document.querySelector(".list-mobile");
+const swipers = {};
 
-const checkbox = document.querySelector("#menuToggle input[type='checkbox']");
-const overlay = document.querySelector(".overlay");
-const modalConfig = document.querySelector(".modal-config");
+//Muestra las aplicaciones activas en la pagina de inicio.
+const showApps = () => {
+  let htmlApps = '';
+  const filteredCategories = addApps.filter(c => c.enable);
 
-const btnRestart = document.querySelectorAll(".btn-restart");
-const btnConfig = document.querySelectorAll(".btn-config");
+  let catKey = 0;
+  for (const cat of filteredCategories) {
+    htmlApps += `<div class="cat-container" id="cat-container-${catKey}">
+      <h3 class="category-title">${cat.category_name}</h3>
+        <div class="swiper mb-3" id="swiper-${catKey}">
+        <div class="swiper-button-next"></div>
+        <div class="swiper-wrapper">`;
 
-const configListTabDesktop = document.querySelector(".config-list-tab-desktop");
-const configListTabMobile = document.querySelector(".config-list-tab-mobile");
-const configListContent = document.querySelector(".config-list-content");
+    const filteredApps = cat.children.filter((a) => a.is_show);
+    const orderedApps = filteredApps.sort((a, b) => a.order > b.order ? 1 : a.order < b.order ? -1 : 0);
 
-/* Send to home */
-logo.addEventListener("click", () => {
-  renderContent(headerMenulist[0].name);
-});
-
-/* Close menu mobile  */
-document.addEventListener("click", function (event) {
-  const menu = document.querySelector("#menuToggle");
-  const isClickInsideMenu = menu.contains(event.target);
-
-  if (!isClickInsideMenu) {
-    checkbox.checked = false;
-    overlay.classList.remove("open");
-  }
-});
-
-checkbox.addEventListener("change", function () {
-  if (this.checked) {
-    overlay.classList.add("open");
-  } else {
-    overlay.classList.remove("open");
-  }
-});
-
-function toggleCheckbox() {
-  checkbox.checked = !checkbox.checked;
-}
-
-function toggleModal() {
-  modalConfig.open = !modalConfig.open;
-}
-
-function toggleOverlay() {
-  if (overlay.classList.contains("open")) {
-    overlay.classList.remove("open");
-  } else {
-    overlay.classList.add("open");
-  }
-}
-
-function restartSlider() {
-  toggleOverlay();
-  const existingNodes = document.querySelectorAll(".swiper");
-  existingNodes.forEach((node) => node.remove());
-
-  const newSlider = document.createElement("div");
-  newSlider.classList.add("swiper");
-  document.body.prepend(newSlider);
-
-  const isTablet = window.innerWidth <= 864;
-  if (isTablet) toggleCheckbox();
-
-  if (newSlider) {
-    renderSlider(infoSlider, newSlider);
-  }
-}
-
-/* Restart slider */
-btnRestart.forEach((btn) => {
-  btn.addEventListener("click", () => restartSlider());
-});
-
-/* Configuration menu */
-btnConfig.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    toggleModal();
-    renderConfigMenu();
-  });
-});
-
-function generateList(arrayList) {
-  return arrayList.map((item, index) => {
-    const li = document.createElement("li");
-    li.setAttribute("data-index", index);
-
-    if (item.icon) {
-      const parser = new DOMParser();
-      const svgDoc = parser.parseFromString(item.icon, "image/svg+xml");
-      const svgElement = svgDoc.documentElement;
-
-      li.appendChild(svgElement);
-      li.insertAdjacentText("beforeend", ` ${item.name}`);
-    } else {
-      li.innerText = item.name;
+    let appKey = 0;
+    for (const app of orderedApps) {
+      htmlApps += `
+      <div id="card-app-${catKey}-${appKey}" class="swiper-slide cursor-pointer d-flex card-app shadow-sm" onclick="showAppDetails('${catKey}-${appKey}')">
+        <div class="bg-white w-100 p-3 rounded-4 d-inline-flex justify-content-center">
+          <img src="${app.thumbnail}" class="img-fluid card-img d-inline-block" alt="${app.title}" />
+        </div>
+      </div>
+      `;
+      appKey++;
     }
 
-    li.addEventListener("click", function () {
-      const items = document.querySelectorAll("li");
-      items.forEach((item) => item.classList.remove("active"));
-
-      this.classList.add("active");
-
-      renderContent(item.name);
-
-      const isTablet = window.innerWidth <= 864;
-      if (isTablet) toggleCheckbox();
-
-      toggleOverlay();
-    });
-
-    return li;
-  });
-}
-
-const headerList = generateList(headerMenulist);
-const mobileMenuList = generateList(headerMenulist);
-const menuConfig = generateList(menuConfigurations);
-
-headerList.forEach((li, index) => {
-  if (index === 0) li.classList.add("active");
-  return menuList.append(li);
-});
-
-mobileMenuList.forEach((li, index) => {
-  if (index === 0) li.classList.add("active");
-  return listMobile.append(li);
-});
-
-menuConfig.forEach((li) => {
-  return configListTabMobile.append(li);
-});
-
-const configListMobileItems = configListTabMobile.querySelectorAll("li");
-
-configListMobileItems.forEach((item) => {
-  item.addEventListener("click", () => {
-    toggleModal();
-    renderConfigMenu();
-  });
-});
-
-const renderContent = (categoryName) => {
-  const app = !categoryName
-    ? apps[0]
-    : apps.find((app) => app.category_name === categoryName);
-
-  let imagesHTML = "";
-  if (!app?.children) return;
-
-  app.children.forEach((childApp, index) => {
-    imagesHTML += `<img src="${
-      childApp.thumbnail
-    }" alt="image" class="source-item ${
-      index === 0 ? "active" : ""
-    }" data-index="${index}">`;
-  });
-
-  let index = 0;
-  const html = `
-  <div class="container-video">
-  <img src=${
-    app.children[index].bg
-  } class="bg-image" alt="Image description" style="display:none;">
-  <video
-    class="main-video"
-    src=${app.children[index].video}
-    autoplay
-    loop
-    muted
-    style=${app.children[index].video ? "" : "display:none;"}
-  ></video>
-</div>
-<section class="main-content">
-  <div class="source">
-    <h2 class="source-title">${app.children[index].title}</h2>
-    <p class="source-description">
-    ${app.children[index].description}
-    </p>
-    <a href=${
-      app.children[index].url
-    } target="_blank" rel="noopener noreferrer" title="play" class="link-btn primary-button btn-play">
-      <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
-        <g opacity="0.8">
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M15.5 9.5L5 16.25V2.75L15.5 9.5ZM11.945 9.5L6.9125 6.26V12.74L11.945 9.5Z"
-            fill="white"
-          />
-        </g>
-      </svg>
-      Iniciar
-    </a>
-  </div>
-  <h3 class="category">${categoryName}</h3>
-  <div class="sources-apps">
-  ${imagesHTML}
-  </div>
-</section>`;
-
-  mainContainer.innerHTML = html;
-
-  let images = document.querySelectorAll(".source-item");
-  images.forEach((image, index) => {
-    image.addEventListener("click", () => {
-      let selectedChild = app.children[index];
-
-      if (!image.classList.contains("active")) {
-        let video = document.querySelector(".main-video");
-        video.src = selectedChild.video;
-        video.style.display = selectedChild.video ? "" : "none";
-
-        let bgImage = document.querySelector(".bg-image");
-        bgImage.src = selectedChild.bg;
-        bgImage.style.display = selectedChild.video ? "none" : "";
-      }
-
-      let title = document.querySelector(".source-title");
-      title.textContent = selectedChild.title;
-
-      let description = document.querySelector(".source-description");
-      description.textContent = selectedChild.description;
-
-      let url = document.querySelector(".link-btn");
-      url.href = selectedChild.url;
-
-      images.forEach((img) => {
-        img.classList.remove("active");
-      });
-      image.classList.add("active");
-    });
-  });
-};
-
-const renderConfigMenu = () => {
-  const menuConfigTab = generateList(menuConfigurations);
-
-  let configListTab;
-
-  if (window.innerWidth <= 864) {
-    configListTab = configListTabMobile;
-  } else {
-    configListTab = configListTabDesktop;
+    swipers[`${catKey}`] = null;
+    htmlApps += '</div></div></div>';
+    catKey++;
   }
 
-  configListTab.innerHTML = "";
-  configListContent.innerHTML = "";
+  const appContainer = document.getElementById("row-cards");
+  appContainer.innerHTML += htmlApps;
 
-  menuConfigTab.forEach((li) => {
-    return configListTab.append(li);
-  });
+  for (const key in swipers) {
+    swipers[key] = new Swiper(`#swiper-${key}`, {
+      // Optional parameters
+      direction: 'horizontal',
+      loop: false,
+      spaceBetween: 16,
+      slidesPerView: 1.1,
+      navigation: {
+        nextEl: '.swiper-button-next',
+      },
 
-  const listTabs = configListTab.querySelectorAll("li");
-
-  listTabs.forEach((tab, index) => {
-    tab.addEventListener("click", () => {
-      listTabs.forEach((tab) => tab.classList.remove("active"));
-      tab.classList.add("active");
-
-      configListContent.innerHTML = "";
-      configListContent.innerHTML = menuConfigurations[index].content;
-      configListContent.firstElementChild.classList.add("active");
+      breakpoints: {
+        // when window width is >= 320px
+        320: {
+          slidesPerView: 1.1
+        },
+        // when window width is >= 480px
+        480: {
+          slidesPerView: 2.1,
+        },
+        // when window width is >= 640px
+        640: {
+          slidesPerView: 4.1,
+        }
+      }
     });
-  });
-
-  /* Select first item */
-  listTabs[0].click();
+  }
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    intro.remove();
-    renderSlider(infoSlider);
-  }, 5500);
-  setTimeout(() => {
-    header.style.display = "flex";
-    footer.style.display = "flex";
-    renderContent(headerMenulist[0].name);
-  }, 5600);
+const refresh = () => {
+  const cardApps = document.getElementsByClassName('card-app');
+  const categoryContainers = document.getElementsByClassName('cat-container');
+  const rowsHome = document.getElementsByClassName('row-info-home');
+  const rowsApp = document.getElementsByClassName('row-info-apps');
+
+  for (let rowHome of rowsHome) {
+    rowHome.classList.remove('d-none');
+  }
+  for (let rowApp of rowsApp) {
+    rowApp.classList.add('d-none');
+  }
+  for (let catContent of categoryContainers) {
+    catContent.classList.remove('d-none');
+  }
+  for (let cardApp of cardApps) {
+    cardApp.classList.remove('selected');
+  }
+
+  document.body.classList.remove('bg-light');
+};
+
+//Mostrar detalles de la aplicación
+const showAppDetails = (key) => {
+  const [catKey, appKey] = key.split('-');
+  const appContainer = document.getElementById("row-info");
+
+  const filteredCategories = addApps.filter(c => c.enable);
+
+  const orderedApps = filteredCategories[catKey].children.sort((a, b) => a.order > b.order ? 1 : a.order < b.order ? -1 : 0);
+  const appInfo = orderedApps[appKey];
+
+  const categoryContainers = document.getElementsByClassName('cat-container');
+  const selectedCategoryContainer = document.getElementById(`cat-container-${catKey}`);
+
+  const cardApps = document.getElementsByClassName('card-app');
+  const selectedCardApp = document.getElementById(`card-app-${key}`);
+
+  const rowsHome = document.getElementsByClassName('row-info-home');
+  const rowsApp = document.getElementsByClassName('row-info-apps');
+
+  for (let rowHome of rowsHome) {
+    rowHome.classList.add('d-none');
+  }
+  for (let rowApp of rowsApp) {
+    rowApp.classList.remove('d-none');
+  }
+  for (let catContent of categoryContainers) {
+    catContent.classList.add('d-none');
+  }
+  for (let cardApp of cardApps) {
+    cardApp.classList.remove('selected');
+  }
+
+  selectedCategoryContainer.classList.remove('d-none');
+  selectedCardApp.classList.add('selected');
+
+  if (appInfo) {
+    appContainer.innerHTML = `
+      <div class="col-12 col-sm-7 order-2 order-sm-1 col-left mt-4">
+        <svg
+          class="cursor-pointer"
+          id="arrow"
+          width="60"
+          height="60"
+          viewBox="0 0 60 60"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          onclick="refresh()"
+        >
+          <path
+            d="M10.875 19.125L4.125 12.375L10.875 5.625M19.875 12.375L4.125 12.375"
+            stroke="#0C5EAA"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+
+        <div class="animate__animated animate__fadeIn animate__slow mb-4"> 
+          <img src="${appInfo.title}" class="img-fluid" alt="" />
+        </div>
+
+        <p class="text-black animate__animated animate__fadeIn animate__slow" style="font-size: 18px">
+          ${appInfo.description}
+        </p>
+        
+        <a class="btn btn-primary px-5 animate__animated animate__fadeIn animate__slow mt-4" href="${appInfo.url}" target="_blank">Iniciar <img class="img-fluid d-inline-block align-baseline" src="/img/arrow_btn.svg"></a>
+      </div>
+      <div class="col-12 col-sm-5 order-1 order-sm-2 position-relative">
+        <img src=${appInfo.cover} alt="" class="img-fluid animate__animated animate__backInDown animate__fast" />
+      </div>`;
+
+    document.body.classList.add('bg-light');
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof ENABLED_FOOTER !== 'undefined') {
+    if (!ENABLED_FOOTER) {
+      const footers = document.getElementsByClassName('footer');
+
+      for (const footer of footers) {
+        footer.remove();
+      }
+    }
+  }
+  showApps();
 });
