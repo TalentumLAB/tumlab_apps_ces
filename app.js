@@ -1,3 +1,44 @@
+<<<<<<< HEAD
+import {
+  infoSlider,
+  headerMenulist,
+  menuConfigurations,
+  apps,
+} from "./const.js";
+import { renderSlider } from "./components/slider.js";
+
+const SHOW_INTRO = true;
+
+const intro = document.querySelector(".intro");
+const header = document.querySelector(".header");
+const footer = document.querySelector(".footer");
+const logo = document.querySelector(".logo");
+const mainContainer = document.querySelector(".main-container");
+
+const menuList = document.querySelector(".menu-list");
+const listMobile = document.querySelector(".list-mobile");
+
+const checkbox = document.querySelector("#menuToggle input[type='checkbox']");
+const overlay = document.querySelector(".overlay");
+const modalConfig = document.querySelector(".modal-config");
+
+const btnRestart = document.querySelectorAll(".btn-restart");
+const btnConfig = document.querySelectorAll(".btn-config");
+
+const configListTabDesktop = document.querySelector(".config-list-tab-desktop");
+const configListTabMobile = document.querySelector(".config-list-tab-mobile");
+const configListContent = document.querySelector(".config-list-content");
+
+/* Send to home */
+logo.addEventListener("click", () => {
+  renderContent(headerMenulist[0].name);
+});
+
+/* Close menu mobile  */
+document.addEventListener("click", function (event) {
+  const menu = document.querySelector("#menuToggle");
+  const isClickInsideMenu = menu.contains(event.target);
+=======
 /// Habilitar o deshabilitar footer
 const ENABLED_FOOTER = true;
 
@@ -164,6 +205,7 @@ const showApps = () => {
       `;
       appKey++;
     }
+>>>>>>> dev-main
 
     swipers[`${catKey}`] = null;
     htmlApps += '</div></div></div>';
@@ -221,6 +263,33 @@ const refresh = () => {
     cardApp.classList.remove('selected');
   }
 
+<<<<<<< HEAD
+const visibleCategory = headerMenulist.filter(
+  (header) => header.is_enable !== false
+);
+
+const headerList = generateList(visibleCategory);
+const mobileMenuList = generateList(visibleCategory);
+const menuConfig = generateList(menuConfigurations);
+
+headerList.forEach((li, index) => {
+  if (index === 0) li.classList.add("active");
+
+  li.addEventListener("click", () => {
+    modalConfig.open = false;
+  });
+
+  return menuList.append(li);
+});
+
+mobileMenuList.forEach((li, index) => {
+  if (index === 0) li.classList.add("active");
+  li.addEventListener("click", () => {
+    modalConfig.open = false;
+  });
+  return listMobile.append(li);
+});
+=======
   document.body.classList.remove('bg-light');
 };
 
@@ -230,6 +299,7 @@ const showAppDetails = (key) => {
   const appContainer = document.getElementById("row-info");
 
   const filteredCategories = addApps.filter(c => c.enable);
+>>>>>>> dev-main
 
   const orderedApps = filteredCategories[catKey].children.sort((a, b) => a.order > b.order ? 1 : a.order < b.order ? -1 : 0);
   const appInfo = orderedApps[appKey];
@@ -240,6 +310,24 @@ const showAppDetails = (key) => {
   const cardApps = document.getElementsByClassName('card-app');
   const selectedCardApp = document.getElementById(`card-app-${key}`);
 
+<<<<<<< HEAD
+  if (app?.children) {
+    app.children.sort((a, b) => a.order - b.order);
+  }
+
+  let imagesHTML = "";
+  if (!app?.children) return;
+
+  app.children.forEach((childApp, index) => {
+    if (childApp.is_show) {
+      imagesHTML += `<img src="${
+        childApp.thumbnail
+      }" alt="image" class="source-item ${
+        index === 0 ? "active" : ""
+      }" data-index="${index}">`;
+    }
+  });
+=======
   const rowsHome = document.getElementsByClassName('row-info-home');
   const rowsApp = document.getElementsByClassName('row-info-apps');
 
@@ -255,6 +343,7 @@ const showAppDetails = (key) => {
   for (let cardApp of cardApps) {
     cardApp.classList.remove('selected');
   }
+>>>>>>> dev-main
 
   selectedCategoryContainer.classList.remove('d-none');
   selectedCardApp.classList.add('selected');
@@ -279,6 +368,51 @@ const showAppDetails = (key) => {
             stroke-linecap="round"
             stroke-linejoin="round"
           />
+<<<<<<< HEAD
+        </g>
+      </svg>
+      Start
+    </a>
+  </div>
+  <h3 class="category">${categoryName}</h3>
+  <div class="sources-apps">
+  ${imagesHTML}
+  </div>
+</section>`;
+
+  mainContainer.innerHTML = html;
+
+  let images = document.querySelectorAll(".source-item");
+  images.forEach((image, index) => {
+    image.addEventListener("click", () => {
+      let selectedChild = app.children[index];
+
+      if (!image.classList.contains("active")) {
+        let video = document.querySelector(".main-video");
+        video.src = selectedChild.video;
+        video.style.display = selectedChild.video ? "" : "none";
+
+        let bgImage = document.querySelector(".bg-image");
+        bgImage.src = selectedChild.bg;
+        bgImage.style.display = selectedChild.video ? "none" : "";
+      }
+
+      let title = document.querySelector(".source-title");
+      title.textContent = selectedChild.title;
+
+      let description = document.querySelector(".source-description");
+      description.textContent = selectedChild.description;
+
+      let url = document.querySelector(".link-btn");
+      url.href = selectedChild.url;
+
+      images.forEach((img) => {
+        img.classList.remove("active");
+      });
+      image.classList.add("active");
+    });
+  });
+=======
         </svg>
 
         <div class="animate__animated animate__fadeIn animate__slow mb-4"> 
@@ -297,6 +431,7 @@ const showAppDetails = (key) => {
 
     document.body.classList.add('bg-light');
   }
+>>>>>>> dev-main
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -309,5 +444,50 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
+<<<<<<< HEAD
+
+  configListTab.innerHTML = "";
+  configListContent.innerHTML = "";
+
+  menuConfigTab.forEach((li) => {
+    return configListTab.append(li);
+  });
+
+  const listTabs = configListTab.querySelectorAll("li");
+
+  listTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => {
+      listTabs.forEach((tab) => tab.classList.remove("active"));
+      tab.classList.add("active");
+
+      configListContent.innerHTML = "";
+      configListContent.innerHTML = menuConfigurations[index].content;
+      configListContent.firstElementChild.classList.add("active");
+    });
+  });
+
+  /* Select first item */
+  listTabs[0].click();
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (SHOW_INTRO) {
+    setTimeout(() => {
+      intro.remove();
+      renderSlider(infoSlider);
+    }, 5500);
+    setTimeout(() => {
+      header.style.display = "flex";
+      footer.style.display = "flex";
+      renderContent(headerMenulist[0].name);
+    }, 5600);
+  } else {
+    intro.remove();
+    header.style.display = "flex";
+    footer.style.display = "flex";
+    renderContent(headerMenulist[0].name);
+  }
+=======
   showApps();
+>>>>>>> dev-main
 });
